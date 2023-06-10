@@ -4,6 +4,7 @@ WORKDIR /app
 RUN pip install --upgrade revChatGPT
 RUN pip install -r requirements.txt
 RUN mkdir -p /root/.kaggle
+RUN mkdir -p /app/generated
 COPY kaggle.json /root/.kaggle/kaggle.json
 RUN chmod 600 /root/.kaggle/kaggle.json
 ENV PRODUCTION true
