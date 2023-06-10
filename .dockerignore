@@ -1,0 +1,6 @@
+/cocast/
+**/__pycache__/
+/.mypy_cache/
+.env
+.gitignore
+Dockerfile
