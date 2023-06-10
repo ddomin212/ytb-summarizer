@@ -8,7 +8,7 @@ from langchain.llms.base import LLM
 class GPTv1(LLM):
     chatbot = Chatbot(
         config={
-            "access_token": os.getenv("OPEN_AI_KEY"),
+            "access_token": os.getenv("OPEN_AI_TOKEN"),
         }
     )
 

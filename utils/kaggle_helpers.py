@@ -7,6 +7,15 @@ import os
 import pandas as pd
 
 
+def is_kaggle_initialized():
+    first_time = (
+        "no" if os.path.isdir(os.path.join("generated", "dataset")) else "yes"
+    )
+    if first_time == "yes":
+        init_kaggle()
+    return first_time
+
+
 def get_kaggle(link, typ, query, first_time):
     """
     Runs a bash script to extract named entities from a PDF
@@ -27,7 +36,7 @@ def get_kaggle(link, typ, query, first_time):
         "link": link,
         "type": typ,
         "query": query,
-        "token": os.getenv("OPEN_AI_KEY"),
+        "token": os.getenv("OPEN_AI_TOKEN"),
     }
     json.dump(
         video_metadata,
@@ -40,7 +49,7 @@ def get_kaggle(link, typ, query, first_time):
     print("Starting Kaggle inference.")
     # run the bash script
     process = subprocess.Popen(
-        ["bash", "kaggle.sh", first_time],
+        ["bash", "utils/kaggle.sh", first_time],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         text=True,
@@ -127,7 +136,7 @@ def init_kernel():
     }
     subprocess.run(
         [
-            "mv",
+            "cp",
             "cocaster.ipynb",
             "generated/kernel/cocaster.ipynb",
         ],
