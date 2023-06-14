@@ -1,7 +1,7 @@
 import os
 import streamlit as st
 
-if os.getenv("PRODUCTION") != "true":
+if os.getenv("MODE") != "production":
     from dotenv import load_dotenv
 
     load_dotenv()

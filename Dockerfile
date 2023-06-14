@@ -7,7 +7,7 @@ RUN mkdir -p /root/.kaggle
 RUN mkdir -p /app/generated
 COPY kaggle.json /root/.kaggle/kaggle.json
 RUN chmod 600 /root/.kaggle/kaggle.json
-ENV PRODUCTION true
+ENV MODE production
 ENV PORT 8501
 EXPOSE $PORT
 CMD streamlit run Main_Page.py --server.port=$PORT --server.address=0.0.0.0

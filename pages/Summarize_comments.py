@@ -1,4 +1,3 @@
-import os
 import streamlit as st
 from utils.kaggle_helpers import get_kaggle, is_kaggle_initialized
 
@@ -8,14 +7,14 @@ st.set_page_config(
     page_icon="🤖",
     layout="wide",
 )
-st.header("✉️ Summarize video")
-st.caption("maximum duration is 2 hours, otherwise you will get an error")
-link = st.text_input("Youtube Link")
+st.header("✉️ Summarize comments from video")
+st.caption("Might not be all the comments, but most of them will be analyzed")
+link_3 = st.text_input("YouTube URL 🔗")
 
-if link:
-    first_time = is_kaggle_initialized()
+if link_3:
+    first_time = is_kaggle_initialized("comments")
     try:
-        response = get_kaggle(link, "summarize", "", first_time)
+        response = get_kaggle("comments", link_3, "summarize", "", first_time)
     except FileNotFoundError:
         st.error("Our servers are on 🔥, please try again later")
         st.stop()

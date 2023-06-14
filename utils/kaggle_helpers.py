@@ -7,16 +7,16 @@ import os
 import pandas as pd
 
 
-def is_kaggle_initialized():
+def is_kaggle_initialized(what):
     first_time = (
         "no" if os.path.isdir(os.path.join("generated", "dataset")) else "yes"
     )
     if first_time == "yes":
-        init_kaggle()
+        init_kaggle(what)
     return first_time
 
 
-def get_kaggle(link, typ, query, first_time):
+def get_kaggle(what, link, typ, query, first_time):
     """
     Runs a bash script to extract named entities from a PDF
     file uploaded to the app, with a spacy NER model inside a
@@ -37,7 +37,9 @@ def get_kaggle(link, typ, query, first_time):
         "type": typ,
         "query": query,
         "token": os.getenv("OPEN_AI_TOKEN"),
+        "gapi_key": os.getenv("GAPI_KEY"),
     }
+    init_kernel(what, change=True)
     json.dump(
         video_metadata,
         open(
@@ -49,7 +51,12 @@ def get_kaggle(link, typ, query, first_time):
     print("Starting Kaggle inference.")
     # run the bash script
     process = subprocess.Popen(
-        ["bash", "utils/kaggle.sh", first_time],
+        [
+            "bash",
+            "utils/kaggle.sh",
+            first_time,
+            "cocaster-kernel" if what == "video" else "comment-kernel",
+        ],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         text=True,
@@ -75,7 +82,7 @@ def get_kaggle(link, typ, query, first_time):
         return contents
 
 
-def init_kaggle():
+def init_kaggle(what):
     """
     Initializes a Kaggle notebook for the given user email.
 
@@ -83,7 +90,16 @@ def init_kaggle():
         user_email (str): The email of the user to initialize the notebook for.
     """
     init_dataset()
-    init_kernel()
+    os.mkdir("generated/kernel")
+    subprocess.run(
+        [
+            "cp",
+            "comment.ipynb",
+            "cocaster.ipynb",
+            "generated/kernel/",
+        ],
+        check=False,
+    )
     os.mkdir("generated/output")
     print("Kaggle directory initialized.")
 
@@ -112,18 +128,20 @@ def init_dataset():
     print("Kaggle dataset initialized.")
 
 
-def init_kernel():
+def init_kernel(what, change=False):
     """
     Initializes a Kaggle kernel.
 
     Args:
         None
     """
-    os.mkdir("generated/kernel")
+    kernel_name = "cocaster-kernel" if what == "video" else "comment-kernel"
+    jntb = "cocaster.ipynb" if what == "video" else "comment.ipynb"
+    print(jntb, kernel_name)
     kaggle_metadata = {
-        "id": "dandominko/cocaster-kernel",
-        "title": "cocaster-kernel",
-        "code_file": "cocaster.ipynb",
+        "id": f"dandominko/{kernel_name}",
+        "title": kernel_name,
+        "code_file": jntb,
         "language": "python",
         "kernel_type": "notebook",
         "is_private": True,
@@ -134,14 +152,6 @@ def init_kernel():
         "kernel_sources": [],
         "competition_sources": [],
     }
-    subprocess.run(
-        [
-            "cp",
-            "cocaster.ipynb",
-            "generated/kernel/cocaster.ipynb",
-        ],
-        check=False,
-    )
     json.dump(
         kaggle_metadata,
         open(

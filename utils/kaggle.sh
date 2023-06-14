@@ -1,5 +1,5 @@
 first_time=$1
-kernel_name=cocaster-kernel
+kernel_name=$2
 if [ $first_time == "yes" ]; then
     kaggle datasets create -p generated/dataset
 else
