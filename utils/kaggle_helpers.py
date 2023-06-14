@@ -70,7 +70,7 @@ def get_kaggle(link, typ, query, first_time):
             print(error.strip())
     # continue with Python code
     print("The script has finished executing.")
-    with open("out.txt") as f:
+    with open("generated/output/out.txt") as f:
         contents = f.read()
         return contents
 
