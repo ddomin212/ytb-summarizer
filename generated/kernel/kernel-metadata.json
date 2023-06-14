@@ -1,1 +1,0 @@
-{"id": "dandominko/comment-kernel", "title": "comment-kernel", "code_file": "comment.ipynb", "language": "python", "kernel_type": "notebook", "is_private": true, "enable_gpu": true, "enable_internet": true, "keywords": ["gpu"], "dataset_sources": ["dandominko/cocaster-data"], "kernel_sources": [], "competition_sources": []}
