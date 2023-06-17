@@ -23,7 +23,7 @@ select_out3 = st.selectbox(
 confirm = st.button("Confirm ✔️", key="confirm3")
 
 if link_3 and select_in3 and select_out3 and confirm:
-    first_time = is_kaggle_initialized("comments")
+    first_time = is_kaggle_initialized()
     try:
         response = get_kaggle(
             select_in3,

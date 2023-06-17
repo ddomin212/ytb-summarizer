@@ -1,4 +1,3 @@
-import os
 import streamlit as st
 from utils.kaggle_helpers import get_kaggle, is_kaggle_initialized
 from utils.countries import languages_with_flags
@@ -26,7 +25,7 @@ select_out4 = st.selectbox(
 confirm = st.button("Confirm ✔️", key="confirm4")
 
 if link_4 and select_in4 and select_out4 and confirm:
-    first_time = is_kaggle_initialized("video")
+    first_time = is_kaggle_initialized()
     try:
         response = get_kaggle(
             select_in4,

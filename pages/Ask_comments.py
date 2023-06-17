@@ -34,7 +34,7 @@ confirm = st.button("Confirm ✔️", key="confirm2")
 
 if link_2 and query and select_in2 and select_out2 and select_q2 and confirm:
     st_player(link_2, height=600)
-    first_time = is_kaggle_initialized("comments")
+    first_time = is_kaggle_initialized()
     with st.spinner("Searching for answer..."):
         try:
             response = get_kaggle(

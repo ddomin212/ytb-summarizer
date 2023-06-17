@@ -1,3 +1,4 @@
+"""List of languages with their respective 2 letter codes."""
 languages_with_flags = {
     "Afrikaans": "af",
     "Albanian": "sq",

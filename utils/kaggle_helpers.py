@@ -1,35 +1,43 @@
 """
-This module contains helper functions for inference of the uploaded PDF file.
+This module contains helper functions for generating summaries of youtube videos and comments.
 """
 import subprocess
 import json
 import os
-import pandas as pd
 from utils.countries import languages_with_flags
 from utils.translate import deepl_translate_query
 
 
-def is_kaggle_initialized(what):
+def is_kaggle_initialized():
+    """
+    Checks if the kaggle is initialized. If not, it initializes it.
+
+    Returns:
+        str: "yes" if the kaggle is initialized, "no" otherwise.
+    """
     first_time = (
         "no" if os.path.isdir(os.path.join("generated", "dataset")) else "yes"
     )
     if first_time == "yes":
-        init_kaggle(what)
+        init_kaggle()
     return first_time
 
 
 def get_kaggle(ilang, olang, what, link, typ, query, first_time, qlang=None):
     """
-    Runs a bash script to extract named entities from a PDF
-    file uploaded to the app, with a spacy NER model inside a
-    Kaggle Notebook for faster inference. The extracted entities
-    are returned as a list of lists, where each inner list represents
-    a row in the output Excel file.
+    Runs a bash script which uploads the video link along with additional information to kaggle.
+    The script then downloads the output text file. The text file is then parsed and returned to the user.
 
     Args:
-        uploaded_file (FileStorage): The uploaded PDF file.
-        first_time (str): A string indicating whether this is the first time the
-                                script is being run. Necessary for the Kaggle API.
+        ilang (str): The language of the video.
+        olang (str): The language of the output summary.
+        what (str): The type of the summary. Either "video" or "comment".
+        link (str): The YouTube link of the video.
+        typ (str):  The type of the video. Either "chat" or "summarize".
+                    Chat is used when you want to ask a question about the video/comment. Summarize is self-explanatory.
+        query (str): The query to ask about the video/comment, if the mode is "chat".
+        first_time (str): Whether this is the first time the user is using the app. Important for Kaggle initialization.
+        qlang (str, optional): The language of the query, if there is one. Defaults to None.
 
     Returns:
         List[List[str]]: A list of lists representing the rows in the output Excel file.
@@ -48,7 +56,7 @@ def get_kaggle(ilang, olang, what, link, typ, query, first_time, qlang=None):
         "output_lang_code": languages_with_flags[olang],
     }
     print(video_metadata)
-    init_kernel(what, change=True)
+    init_kernel(what)
     json.dump(
         video_metadata,
         open(
@@ -91,12 +99,9 @@ def get_kaggle(ilang, olang, what, link, typ, query, first_time, qlang=None):
         return contents
 
 
-def init_kaggle(what):
+def init_kaggle():
     """
-    Initializes a Kaggle notebook for the given user email.
-
-    Args:
-        user_email (str): The email of the user to initialize the notebook for.
+    Initializes a Kaggle directory.
     """
     init_dataset()
     os.mkdir("generated/kernel")
@@ -116,9 +121,6 @@ def init_kaggle(what):
 def init_dataset():
     """
     Initializes a Kaggle dataset.
-
-    Args:
-        None
     """
     os.mkdir("generated/dataset")
     kaggle_metadata = {
@@ -137,12 +139,13 @@ def init_dataset():
     print("Kaggle dataset initialized.")
 
 
-def init_kernel(what, change=False):
+def init_kernel(what):
     """
-    Initializes a Kaggle kernel.
+    Initializes a Kaggle notebook, has to be done every time we upload a new notebook, since there a are two notebooks.
+    The first one is for the video summary, the second one is for the comment summary.
 
     Args:
-        None
+        what (str): The type of the summary. Either "video" or "comment".
     """
     kernel_name = "cocaster-kernel" if what == "video" else "comment-kernel"
     jntb = "cocaster.ipynb" if what == "video" else "comment.ipynb"

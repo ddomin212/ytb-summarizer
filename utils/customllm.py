@@ -1,11 +1,14 @@
+"""Custom free ChatGPT API LLM for langchain."""
 import os
-from typing import Any, List, Mapping, Optional
+from typing import List, Optional
 from revChatGPT.V1 import Chatbot
 from langchain.callbacks.manager import CallbackManagerForLLMRun
 from langchain.llms.base import LLM
 
 
 class GPTv1(LLM):
+    """Custom LLM for revChatGPT API because it's not supported by langchain yet and it's free."""
+
     chatbot = Chatbot(
         config={
             "access_token": os.getenv("OPEN_AI_TOKEN"),

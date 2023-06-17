@@ -1,3 +1,4 @@
+""" This module contains functions for generating ideas for youtube videos. """
 from langchain.chains import LLMChain
 from langchain.chains import SequentialChain
 from langchain.prompts import PromptTemplate
@@ -5,6 +6,17 @@ from utils.customllm import GPTv1
 
 
 def video_ideation(abstract):
+    """
+    Create a video script, title and thumbnail idea based on a short description.
+
+    Args:
+        abstract (str): Short description of the video.
+
+    Returns:
+        script (str): Script of the video.
+        title (str): Title of the video.
+        thumbnail (str): Thumbnail idea for the video.
+    """
     llm = GPTv1()
     title_text = """You are an expert on creating youtube titles that maximize impressions and click through rate of a video, 
     based on a video script. Your titles are controversial and eye popping and they are not longer than 80 characters. 
