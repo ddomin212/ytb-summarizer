@@ -1,6 +1,6 @@
 import streamlit as st
 from utils.ideation import video_ideation
-
+from utils.countries import languages_with_flags
 
 st.set_page_config(
     page_title="SummarizeTube",
@@ -8,7 +8,6 @@ st.set_page_config(
     layout="wide",
 )
 st.header("📄 Draft video script & thumbnail & title")
-st.caption("maximum duration is 2 hours, otherwise you will get an error")
 abstract = st.text_area(label="🖊️ Video abstract", max_chars=2000)
 
 if abstract:

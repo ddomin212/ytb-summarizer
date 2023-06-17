@@ -5,6 +5,8 @@ import subprocess
 import json
 import os
 import pandas as pd
+from utils.countries import languages_with_flags
+from utils.translate import deepl_translate_query
 
 
 def is_kaggle_initialized(what):
@@ -16,7 +18,7 @@ def is_kaggle_initialized(what):
     return first_time
 
 
-def get_kaggle(what, link, typ, query, first_time):
+def get_kaggle(ilang, olang, what, link, typ, query, first_time, qlang=None):
     """
     Runs a bash script to extract named entities from a PDF
     file uploaded to the app, with a spacy NER model inside a
@@ -32,13 +34,20 @@ def get_kaggle(what, link, typ, query, first_time):
     Returns:
         List[List[str]]: A list of lists representing the rows in the output Excel file.
     """
+    if qlang and qlang != ilang:
+        query = deepl_translate_query(query, ilang)
     video_metadata = {
         "link": link,
         "type": typ,
         "query": query,
         "token": os.getenv("OPEN_AI_TOKEN"),
         "gapi_key": os.getenv("GAPI_KEY"),
+        "input_lang": ilang,
+        "output_lang": olang,
+        "input_lang_code": languages_with_flags[ilang],
+        "output_lang_code": languages_with_flags[olang],
     }
+    print(video_metadata)
     init_kernel(what, change=True)
     json.dump(
         video_metadata,
@@ -77,7 +86,7 @@ def get_kaggle(what, link, typ, query, first_time):
             print(error.strip())
     # continue with Python code
     print("The script has finished executing.")
-    with open("generated/output/out.txt") as f:
+    with open("generated/output/out.txt", encoding="utf-8") as f:
         contents = f.read()
         return contents
 
