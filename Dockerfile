@@ -10,4 +10,4 @@ RUN chmod 600 /root/.kaggle/kaggle.json
 ENV MODE production
 ENV PORT 8501
 EXPOSE $PORT
-CMD streamlit run Main_Page.py --server.port=$PORT --server.address=0.0.0.0
+CMD streamlit run Jobs.py --server.port=$PORT --server.address=0.0.0.0

@@ -9,7 +9,7 @@ from data_utils.date_check import check_date
 from data_utils.parse_jobs import get_locations, get_pay, get_tech
 from data_utils.st_utils import filters, load_data
 
-if os.getenv("MODE") != "prod":
+if os.getenv("MODE") != "production":
     from dotenv import load_dotenv
 
     load_dotenv()
