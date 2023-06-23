@@ -1,8 +1,10 @@
 import textwrap
+
 import streamlit as st
 from streamlit_player import st_player
-from utils.kaggle_helpers import get_kaggle, is_kaggle_initialized
+
 from utils.countries import languages_with_flags
+from utils.kaggle import get_kaggle, is_kaggle_initialized
 
 st.set_page_config(page_title="AskTube", page_icon="📷", layout="wide")
 st.header("💬 Chat with your comments!")

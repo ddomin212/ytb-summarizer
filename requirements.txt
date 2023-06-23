@@ -2,3 +2,5 @@ streamlit
 streamlit-player
 kaggle
 langchain
+revChatGPT
+deepl

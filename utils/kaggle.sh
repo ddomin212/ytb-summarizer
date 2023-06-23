@@ -2,8 +2,10 @@ first_time=$1
 kernel_name=$2
 if [ $first_time == "yes" ]; then
     kaggle datasets create -p generated/dataset
-else
+elif [ $first_time == "no" ]; then
     kaggle datasets version -p generated/dataset -m '"new"'
+else
+    echo "Moving on without creating dataset"
 fi
 
 sleep 10

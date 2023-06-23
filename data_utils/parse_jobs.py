@@ -5,23 +5,22 @@ from statistics import median
 import pandas as pd
 
 
-def in_description(desc, technologies, tech_counts, alt=False):
-    for w in desc.split(" "):
-        w = w.lower()
-        if w.lower() in technologies:
+def in_description(desc, technologies, tech_counts):
+    for w in desc:
+        if w in technologies:
             tech_counts[w] = tech_counts.get(w, 0) + 1
 
 
-def extract_pay(pay_range):
-    cleaned_range = re.sub(r"[^\d\s]", "", pay_range)
+# def extract_pay(pay_range):
+#     cleaned_range = re.sub(r"[^\d\s]", "", pay_range)
 
-    values = cleaned_range.split()
+#     values = cleaned_range.split()
 
-    int_values = [int(val) for val in values if int(val) != 0]
+#     int_values = [int(val) for val in values if int(val) != 0]
 
-    median_value = median(int_values)
+#     median_value = median(int_values)
 
-    return median_value
+#     return median_value
 
 
 # def parse_title(t, positions):
@@ -89,7 +88,7 @@ def get_tech(dataframe, misto, tech_dict):
         ]
 
     dataframe.req_tech.apply(
-        lambda x: in_description(x, technologies, tech_counts, alt=True)
+        lambda x: in_description(x, technologies, tech_counts)
     )
 
     chart_data = pd.DataFrame(tech_counts.items(), columns=["Tech", "Count"])
@@ -104,14 +103,10 @@ def get_pay(dataframe, misto, seniorita):
             dataframe.title.str.contains(seniorita, case=False)
         ]
     print(dataframe.shape)
-    med_arr = (
-        dataframe[(dataframe.pay_range.isna() == False)]
-        .pay_range.apply(lambda x: extract_pay(x))
-        .values.tolist()
-    )
+    med_arr = dataframe[dataframe.pay != "Unknown"].pay.values.tolist()
     median_pay = median(med_arr)
     print(median_pay)
-    return int(median_pay * 1000)
+    return int(median_pay)
 
 
 def get_locations(dataframe, misto, seniorita):
