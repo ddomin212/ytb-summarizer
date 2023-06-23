@@ -1,10 +1,10 @@
 import streamlit as st
+
 from utils.ideation import video_ideation
-from utils.countries import languages_with_flags
 
 st.set_page_config(
-    page_title="SummarizeTube",
-    page_icon="🤖",
+    page_title="Video Ideation Tool",
+    page_icon="🎥",
     layout="wide",
 )
 st.header("📄 Draft video script & thumbnail & title")

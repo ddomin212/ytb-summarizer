@@ -1,6 +1,7 @@
 streamlit
 streamlit-player
+streamlit-option-menu
 kaggle
 langchain
-revChatGPT
 deepl
+python-dotenv
