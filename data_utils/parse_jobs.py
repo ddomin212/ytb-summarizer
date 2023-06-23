@@ -5,83 +5,35 @@ from statistics import median
 import pandas as pd
 
 
-def in_description(desc, technologies, tech_counts):
+def in_description(desc, technologies, tech_counts):  # TODO - refactor
+    """
+    Counts the total number of technologies in all the scraped job descriptions.
+
+    Args:
+        desc (str): The required technologies from the job description.
+        technologies (list): A list of all possible technologies.
+        tech_counts (dict): A dictionary containing the technologies as keys and the count as values.
+    """
     for w in desc:
         if w in technologies:
             tech_counts[w] = tech_counts.get(w, 0) + 1
 
 
-# def extract_pay(pay_range):
-#     cleaned_range = re.sub(r"[^\d\s]", "", pay_range)
-
-#     values = cleaned_range.split()
-
-#     int_values = [int(val) for val in values if int(val) != 0]
-
-#     median_value = median(int_values)
-
-#     return median_value
-
-
-# def parse_title(t, positions):
-#     for w in positions:
-#         if w.lower() in t.lower():
-#             return True
-#     return False
-
-
-# def position_select(
-#     df, position
-# ):  # TODO: asi spíš rozdělit nástroje než pozice
-#     if position == "Data Analyst":
-#         positions = [
-#             "analytik",
-#             "analyst",
-#             "analyzuj",
-#             "analýza",
-#             "analýzy",
-#             "Excel",
-#             "SQL",
-#             "Power BI",
-#             "Tableau",
-#         ]
-#     elif position == "Data Scientist":
-#         positions = [
-#             "scien",
-#             "věde",
-#             "věda",
-#             "machine",
-#             "ML",
-#             "strojov",
-#             "uměl",
-#             "tensorflow",
-#             "pytorch",
-#             "jax",
-#         ]
-#     elif position == "Data Engineer":
-#         positions = [
-#             "data engineer",
-#             "databáz" "governance",
-#             "airflow",
-#             "dataops",
-#             "warehouse",
-#             "dwh",
-#         ]
-#     df = df[df.title.apply(lambda x: parse_title(x, positions))]
-#     return df
-
-
 def get_tech(dataframe, misto, tech_dict):
+    """
+    Gets the technologies from the scraped job descriptions.
+
+    Args:
+        dataframe (pandas.DataFrame): The scraped data.
+        misto (str): The location filter value.
+        tech_dict (dict): A dictionary containing the technologies as keys and their branch as values.
+                            Example - {"Node": "Backend", "Docker": "DevOps"}
+
+    Returns:
+        pandas.DataFrame: A DataFrame containing the technologies and their counts.
+    """
     technologies = [x for x in tech_dict.keys()]
     tech_counts = {}
-    # json.dump(
-    #     {k.lower(): v for k, v in data_dict.items()},
-    #     open("data_technologies.json", "w", encoding="utf-8"),
-    # )
-    # json.dump(
-    #     {k.lower(): v for k, v in devops_dict.items()},
-    #     open("devops_technologies.json", "w", encoding="utf-8"),
-    # )
     if misto != "Celá ČR":
         dataframe = dataframe[
             dataframe.location.str.contains(misto, case=False)
@@ -97,7 +49,17 @@ def get_tech(dataframe, misto, tech_dict):
     return chart_data
 
 
-def get_pay(dataframe, misto, seniorita):
+def get_pay(dataframe, seniorita):
+    """
+    Gets the median pay for the selected seniority.
+
+    Args:
+        dataframe (pandas.DataFrame): The scraped data.
+        seniorita (str): The seniority filter value.
+
+    Returns:
+        int: The median pay for the selected seniority.
+    """
     if seniorita != "Všechny":
         dataframe = dataframe[
             dataframe.title.str.contains(seniorita, case=False)
@@ -109,7 +71,17 @@ def get_pay(dataframe, misto, seniorita):
     return int(median_pay)
 
 
-def get_locations(dataframe, misto, seniorita):
+def get_locations(dataframe, seniorita):
+    """
+    Gets the locations from the scraped job descriptions.
+
+    Args:
+        dataframe (pandas.DataFrame): The scraped data.
+        seniorita (str): The seniority filter value.
+
+    Returns:
+        pandas.Series: A Series containing the locations and their counts.
+    """
     if seniorita != "Všechny":
         dataframe = dataframe[
             dataframe.title.str.contains(seniorita, case=False)

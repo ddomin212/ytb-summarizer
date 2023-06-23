@@ -5,6 +5,16 @@ import streamlit as st
 
 
 def filters(key_name):
+    """
+    Initializes filters for the streamlit app dashboard.
+
+    Args:
+        key_name (str): The name of the filter. Either "data", "devops" or "web".
+
+    Returns:
+        tuple: A tuple of two strings, the first one is the location fiter value,
+                the second one is the seniority filter value.
+    """
     c1, c2 = st.columns(2)
     with c1:
         misto = st.selectbox(
@@ -22,6 +32,14 @@ def filters(key_name):
 
 
 def load_data():
+    """
+    Loads the scraped data from Kaggle API from the generated/scraped/jobs_cz_docs.json file.
+
+    Returns:
+        tuple: A tuple of four elements. The first one is a pandas DataFrame,
+                the other three are dictionaries containing the various technologies
+                related to the dictionary variable name.
+    """
     with open(
         "generated/scraped/jobs_cz_docs.json", "r", encoding="utf-8"
     ) as f:

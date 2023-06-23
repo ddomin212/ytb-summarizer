@@ -62,8 +62,8 @@ if selected == "Cloud":
     df = df[df.title.str.contains("(?i)cloud|azure|aws|gcp|google|cloudový")]
     tech_data = get_tech(df, misto, {**web, **devops})
 
-loc_data = get_locations(df, misto, seniorita)
-pay_data = get_pay(df, misto, seniorita)
+loc_data = get_locations(df, seniorita)
+pay_data = get_pay(df, seniorita)
 
 alt.data_transformers.enable("default", max_rows=None)
 alt.renderers.set_embed_options(dpi=300)
