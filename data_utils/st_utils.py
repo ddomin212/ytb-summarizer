@@ -3,6 +3,8 @@ import json
 import pandas as pd
 import streamlit as st
 
+from data_utils.parse_json import write_updated_json
+
 
 def filters(key_name):
     """
@@ -40,10 +42,17 @@ def load_data():
                 the other three are dictionaries containing the various technologies
                 related to the dictionary variable name.
     """
-    with open(
-        "generated/scraped/jobs_cz_docs.json", "r", encoding="utf-8"
-    ) as f:
-        json_data = json.load(f)
+    try:
+        with open(
+            "generated/scraped/jobs_cz_docs.json", "r", encoding="utf-8"
+        ) as f:
+            json_data = json.load(f)
+    except FileNotFoundError:
+        write_updated_json()
+        with open(
+            "generated/scraped/jobs_cz_docs.json", "r", encoding="utf-8"
+        ) as f:
+            json_data = json.load(f)
     with open("static/devops_technologies.json", "r", encoding="utf-8") as f:
         devops = json.load(f)
     with open("static/data_technologies.json", "r", encoding="utf-8") as f:
