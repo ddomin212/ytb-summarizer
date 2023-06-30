@@ -41,7 +41,8 @@ def check_date(date_string):
                 "jobs-scraper",
                 "-p",
                 "generated/scraped",
-            ]
+            ],
+            check=False,
         )
         return new_date
     else:

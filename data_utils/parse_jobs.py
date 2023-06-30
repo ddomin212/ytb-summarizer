@@ -1,11 +1,9 @@
-import json
-import re
 from statistics import median
 
 import pandas as pd
 
 
-def in_description(desc, technologies, tech_counts):  # TODO - refactor
+def in_description(desc, technologies, tech_counts):
     """
     Counts the total number of technologies in all the scraped job descriptions.
 
@@ -14,9 +12,9 @@ def in_description(desc, technologies, tech_counts):  # TODO - refactor
         technologies (list): A list of all possible technologies.
         tech_counts (dict): A dictionary containing the technologies as keys and the count as values.
     """
-    for w in desc:
-        if w in technologies:
-            tech_counts[w] = tech_counts.get(w, 0) + 1
+    for word in desc:
+        if word in technologies:
+            tech_counts[word] = tech_counts.get(word, 0) + 1
 
 
 def get_tech(dataframe, misto, tech_dict):
@@ -32,7 +30,7 @@ def get_tech(dataframe, misto, tech_dict):
     Returns:
         pandas.DataFrame: A DataFrame containing the technologies and their counts.
     """
-    technologies = [x for x in tech_dict.keys()]
+    technologies = tech_dict.keys()
     tech_counts = {}
     if misto != "Celá ČR":
         dataframe = dataframe[

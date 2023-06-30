@@ -5,3 +5,4 @@ kaggle
 langchain
 deepl
 python-dotenv
+bs4

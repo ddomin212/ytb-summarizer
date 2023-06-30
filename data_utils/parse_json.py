@@ -4,7 +4,16 @@ from statistics import median
 
 
 def process_json_file(file_path):
-    with open(file_path, "r") as file:
+    """
+    Process a JSON file and return a dictionary
+
+    Args:
+        file_path (str): The path to the JSON file
+
+    Returns:
+        dict: A dictionary containing the JSON data
+    """
+    with open(file_path, "r", encoding="utf-8") as file:
         # Read the JSON file as a string
         json_string = file.read()
 
@@ -18,6 +27,15 @@ def process_json_file(file_path):
 
 
 def extract_pay(pay_range):
+    """
+    Extract the median pay from a pay range
+
+    Args:
+        pay_range (str): A string containing the pay range
+
+    Returns:
+        int: The median pay
+    """
     cleaned_range = re.sub(r"[^\d\s]", "", pay_range)
 
     values = cleaned_range.split()
@@ -30,6 +48,16 @@ def extract_pay(pay_range):
 
 
 def get_bigrams(text):
+    """
+    Generate bigrams from a text. Useful later for extracting technologies
+    that are not single words, for example: "google bigquery".
+
+    Args:
+        text (str): The text to generate bigrams from
+
+    Returns:
+        list: A list of bigrams
+    """
     # Split the text into individual words
     words = text.split()
 
@@ -48,12 +76,40 @@ def get_bigrams(text):
 
 
 def keep_alphanumeric_space(text):
+    """
+    Keep only alphanumeric characters and spaces in a text
+
+    Args:
+        text (str): The text to clean
+
+    Returns:
+        str: The cleaned text
+    """
     # Use regex to keep only words, digits, and spaces
     cleaned_text = re.sub(r"[^\w\s\d.]", "", text)
     return cleaned_text
 
 
 def write_updated_json():
+    """
+    Write the edited JSON file to generated/scraped/jobs_cz_docs.json
+    The formt of the JSON file is as follows:
+    [
+        {
+            "title": "Data Scientist",
+            "company": "Google",
+            "location": "Prague",
+            "pay": 100000,
+            "text": "This is a job description",
+            "req_tech": ["python", "sql", "bigquery"]
+            "url": "https://www.jobs.cz/12345"
+        },
+        ...
+    ]
+
+    Returns:
+        None
+    """
     file_path = "generated/scraped/jobs_cz.json"
     json_data = process_json_file(file_path)
 

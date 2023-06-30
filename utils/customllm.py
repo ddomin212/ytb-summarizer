@@ -1,9 +1,10 @@
 """Custom free ChatGPT API LLM for langchain."""
 import os
-from typing import List, Optional
-from revChatGPT.V1 import Chatbot
+from typing import Any, List, Mapping, Optional
+
 from langchain.callbacks.manager import CallbackManagerForLLMRun
 from langchain.llms.base import LLM
+from revChatGPT.V1 import Chatbot
 
 
 class GPTv1(LLM):
@@ -18,6 +19,10 @@ class GPTv1(LLM):
     @property
     def _llm_type(self) -> str:
         return "custom"
+
+    @property
+    def verbose(self) -> bool:
+        return False
 
     def _call(
         self,
