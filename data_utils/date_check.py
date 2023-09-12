@@ -3,18 +3,13 @@ import os
 import subprocess
 
 
-def check_date(date_string):
+def check_date():
     """
     Checks if 7 days have passed since the last data update.
     If it has, it updates the date and the data, otherwise it
     just returns the date the data was last updated.
-
-    Args:
-        date_string (str): The date of the last data update.
-
-    Returns:
-        str: The date of the last data update or today.
     """
+    date_string = os.getenv("START_DATE")
 
     # Convert string to date object
     date = datetime.datetime.strptime(
@@ -43,7 +38,6 @@ def check_date(date_string):
                 "generated/scraped",
             ]
         )
-        return new_date
+        os.environ["START_DATE"] = new_date
     else:
         print("7 days have not passed yet.")
-        return date_string

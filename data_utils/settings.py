@@ -1,4 +1,15 @@
-data_dict = {
+DATA_REGEX = """data|database|databáze|databaze|sql|nosql|etl|data engineer|scientist|analyst
+            |bi|buissness|analytik|vědec|umělá inteligence|umělou inteligenci| ai |machine learning| ml |big data|strojové učení""",
+
+WEBDEV_REGEX = """(?i)frontend|backend|fullstack|full stack|vue|react|angular|svelte|web developer|webdev|web dev
+            |webdesign|web design|webdesigner|web designer|webmaster|web master|webmaster
+            |web master|django|spring|flask|node|php|wordpress|drupal|laravel|symfony|ruby|rails|html|css|javascript|typescript|developer|lamp|mean|mern|vývojář|webový"""
+
+DEVOPS_REGEX = "(?i)devops|mlops|jenkins|kubernetes|docker|dataops|ops|gitlab|ansible|terraform|aws|azure|gcp|cloud"
+
+CLOUD_REGEX = "(?i)cloud|aws|azure|gcp|google|cloudový"
+
+DATA_DICT = {
     "excel": "Data Analytics",
     "tableau": "Data Analytics",
     "power bi": "Data Analytics",
@@ -148,7 +159,7 @@ data_dict = {
 }
 
 
-webdev_dict = {
+WEBDEV_DICT = {
     # Programming Languages
     "HTML": "Programming Languages",
     "CSS": "Programming Languages",
@@ -271,7 +282,7 @@ webdev_dict = {
 }
 
 
-devops_dict = {
+DEVOPS_DICT = {
     "aws": "Cloud Computing",
     "azure": "Cloud Computing",
     "gcp": "Cloud Computing",

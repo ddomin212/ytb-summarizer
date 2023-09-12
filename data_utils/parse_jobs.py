@@ -4,6 +4,25 @@ from statistics import median
 
 import pandas as pd
 
+def filter_dataframe_tech(df, misto, tech_dict, regex):
+    """Filter the dataframe by the selected technologies for a specific field of work.
+
+    Args:
+        df: dataframe
+        misto: place you want to filter by
+        tech_dict: technologies you want to filter by
+        regex: the regex to parse the job description
+
+    Returns:
+        dataframe: filtered dataframe
+    """
+    df = df[
+        df.title.str.contains(
+            regex
+        )
+    ]
+    tech_data = get_tech(df, misto, tech_dict)
+    return tech_data
 
 def in_description(desc, technologies, tech_counts):  # TODO - refactor
     """
