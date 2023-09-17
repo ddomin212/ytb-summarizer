@@ -22,6 +22,7 @@ jobs:
           pip install -r requirements.txt
       - name: Create temporary kaggle.json file
         run: |
+          mkdir /home/runner/.kaggle
           sudo echo '${{ secrets.KAGGLE_JSON }}' > /home/runner/.kaggle/kaggle.json
         shell: bash
       - name: Test with pytest
