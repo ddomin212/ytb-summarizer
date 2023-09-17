@@ -11,7 +11,7 @@ from utils.translate import deepl_translate_query
 
 def is_kaggle_initialized():
     """
-    Checks if the kaggle is initialized. If not, it initializes it.
+    Checks if kaggle is initialized. If not, it initializes it.
 
     Returns:
         str: "yes" if the kaggle is initialized, "no" otherwise.
@@ -136,7 +136,8 @@ def init_kaggle():
     Initializes a Kaggle directory.
     """
     init_dataset()
-    os.mkdir("generated/kernel")
+    if not os.path.isdir("generated/kernel"):
+        os.mkdir("generated/kernel")
     subprocess.run(
         [
             "cp",
@@ -194,7 +195,7 @@ def init_kernel(what):
         if what == "comment"
         else "scraping.ipynb"
     )
-    print(jntb, kernel_name)
+
     kaggle_metadata = {
         "id": f"dandominko/{kernel_name}",
         "title": kernel_name,
@@ -209,6 +210,7 @@ def init_kernel(what):
         "kernel_sources": [],
         "competition_sources": [],
     }
+
     json.dump(
         kaggle_metadata,
         open(
@@ -217,4 +219,5 @@ def init_kernel(what):
             encoding="utf-8",
         ),
     )
+
     print("Kaggle kernel initialized.")

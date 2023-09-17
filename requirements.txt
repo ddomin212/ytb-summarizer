@@ -4,3 +4,5 @@ kaggle
 langchain
 revChatGPT
 deepl
+streamlit-option-menu
+python-dotenv

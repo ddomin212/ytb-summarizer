@@ -1,9 +1,10 @@
 """Custom free ChatGPT API LLM for langchain."""
 import os
 from typing import List, Optional
-from revChatGPT.V1 import Chatbot
+
 from langchain.callbacks.manager import CallbackManagerForLLMRun
 from langchain.llms.base import LLM
+from revChatGPT.V1 import Chatbot
 
 
 class GPTv1(LLM):
@@ -25,7 +26,7 @@ class GPTv1(LLM):
         stop: Optional[List[str]] = None,
         run_manager: Optional[CallbackManagerForLLMRun] = None,
     ) -> str:
-        print(prompt)
+        # print(prompt)
         response = ""
         for data in self.chatbot.ask(prompt):
             response = data["message"]

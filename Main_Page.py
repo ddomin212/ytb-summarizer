@@ -1,7 +1,7 @@
 import streamlit as st
-from utils.general import is_prod
+from dotenv import load_dotenv
 
-is_prod()
+load_dotenv()
 
 st.set_page_config(
     page_title="SummarizeTube",

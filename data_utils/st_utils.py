@@ -1,12 +1,6 @@
-import json
-from functools import partial
-
-import pandas as pd
-import streamlit as st
 import altair as alt
+import streamlit as st
 
-from data_utils.parse_jobs import filter_dataframe_tech
-from data_utils.settings import DATA_REGEX, DEVOPS_REGEX, WEB_REGEX, CLOUD_REGEX
 
 def filters(key_name):
     """
@@ -35,53 +29,6 @@ def filters(key_name):
     return misto, seniorita
 
 
-def load_data():
-    """
-    Loads the scraped data from Kaggle API from the generated/scraped/jobs_cz_docs.json file.
-
-    Returns:
-        tuple: A tuple of four elements. The first one is a pandas DataFrame,
-                the other three are dictionaries containing the various technologies
-                related to the dictionary variable name.
-    """
-    with open(
-        "generated/scraped/jobs_cz_docs.json", "r", encoding="utf-8"
-    ) as f:
-        json_data = json.load(f)
-    with open("static/devops_technologies.json", "r", encoding="utf-8") as f:
-        devops = json.load(f)
-    with open("static/data_technologies.json", "r", encoding="utf-8") as f:
-        data = json.load(f)
-    with open("static/web_technologies.json", "r", encoding="utf-8") as f:
-        web = json.load(f)
-    df = pd.DataFrame(json_data)
-    return df, devops, data, web
-
-def select_job_position(selected, df, misto, devops, data, web):
-    """filters the dataframe according to the selected job position
-
-    Args:
-        selected: the job position selected
-        df: dataframe with job postings
-        misto: selected location
-        devops: dictionary of devops technologies
-        data: dictionary of data technologies
-        web: dictionary of web technologies
-
-    Returns:
-        filtered dataframe
-    """
-    partial_filter = partial(filter_dataframe_tech, df=df, misto=misto)
-    if selected == "DevOps":
-        tech_data = partial_filter(devops, DEVOPS_REGEX)
-    if selected == "Web":
-        tech_data = partial_filter({**web, **devops}, WEB_REGEX)
-    if selected == "Data":
-        tech_data = partial_filter({**data, **devops}, DATA_REGEX)
-    if selected == "Cloud":
-        tech_data = partial_filter({**web, **devops}, DEVOPS_REGEX)
-    return tech_data
-
 def plot_chart(tech_data):
     """create an altair chart showing the number of jobs for each technology
 
@@ -105,6 +52,7 @@ def plot_chart(tech_data):
     )
     return c
 
+
 def detail(loc_data, pay_data):
     """plot the detailed info on the pay and number of jobs
 
@@ -117,4 +65,6 @@ def detail(loc_data, pay_data):
         st.dataframe(loc_data, use_container_width=True, height=200)
     with c4:
         st.metric(label="Median Pay", value=str(pay_data) + " Kč/měsíc")
-        st.metric(label="Number of jobs", value=str(sum(loc_data.values.tolist())))
+        st.metric(
+            label="Number of jobs", value=str(sum(loc_data.values.tolist()))
+        )

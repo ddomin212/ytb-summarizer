@@ -1,15 +1,12 @@
-import os
-
-import altair as alt
 import streamlit as st
+from dotenv import load_dotenv
 from streamlit_option_menu import option_menu
 
-from data_utils.date_check import check_date
-from data_utils.parse_jobs import get_locations, get_pay
-from data_utils.st_utils import filters, load_data, select_job_position, plot_chart, detail
-from utils.general import is_prod
+from data_utils.parse import get_locations, get_pay, select_job_position
+from data_utils.scrape import check_date, load_data
+from data_utils.st_utils import detail, filters, plot_chart
 
-is_prod()
+load_dotenv()
 check_date()
 
 st.header("Select your desired field of work:")
@@ -26,8 +23,8 @@ misto, seniorita = filters(selected)
 df, devops, data, web = load_data()
 
 tech_data = select_job_position(selected, df, misto, devops, data, web)
-loc_data = get_locations(df, seniorita)
-pay_data = get_pay(df, seniorita)
+loc_data = get_locations(df, misto, seniorita)
+pay_data = get_pay(df, misto, seniorita)
 
 
 st.divider()
