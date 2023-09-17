@@ -2,10 +2,10 @@ name: Project Tests
 on:
   push:
     branches:
-      - alt2
+      - wip
   pull_request:
     branches:
-      - alt2
+      - wip
 
 jobs:
   build:
