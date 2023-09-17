@@ -5,4 +5,5 @@ langchain
 revChatGPT
 deepl
 streamlit-option-menu
+pytest
 python-dotenv

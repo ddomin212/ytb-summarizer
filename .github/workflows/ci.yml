@@ -20,13 +20,17 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: File name
-        run: |
-          ls /home
-        shell: bash
       - name: Create temporary kaggle.json file
         run: |
-          echo '${{ secrets.KAGGLE_JSON }}' > /home/kaggle.json
+          sudo echo '${{ secrets.KAGGLE_JSON }}' > /home/runner/.kaggle/kaggle.json
+        shell: bash
+      - name: Create temporary kaggle.json file 2
+        run: |
+          sudo echo '${{ secrets.KAGGLE_JSON }}' > /home/linuxbrew/.kaggle/kaggle.json
+        shell: bash
+      - name: Create temporary kaggle.json file 3
+        run: |
+          sudo echo '${{ secrets.KAGGLE_JSON }}' > /home/runneradmin/.kaggle/kaggle.json
         shell: bash
       - name: Test with pytest
         run: pytest
