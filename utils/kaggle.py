@@ -4,7 +4,7 @@ This module contains helper functions for generating summaries of youtube videos
 import json
 import os
 import subprocess
-
+import streamlit as st
 from utils.countries import languages_with_flags
 from utils.translate import deepl_translate_query
 
@@ -81,7 +81,9 @@ def get_kaggle(ilang, olang, what, link, typ, query, first_time, qlang=None):
         "link": link,
         "type": typ,
         "query": query,
-        "token": os.getenv("OPEN_AI_TOKEN"),
+        "_1PSID": st.session_state._1PSID,
+        "_1PSIDTS": st.session_state._1PSIDTS,
+        "_1PSIDCC": st.session_state._1PSIDCC,
         "gapi_key": os.getenv("GAPI_KEY"),
         "input_lang": ilang,
         "output_lang": olang,
