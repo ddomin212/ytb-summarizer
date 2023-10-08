@@ -52,7 +52,7 @@ def scrape_data_kaggle():
             break
         if error:
             print(error.strip())
-    # continue with Python code
+
     print("The script has finished executing.")
 
 
@@ -126,7 +126,7 @@ def get_kaggle(ilang, olang, what, link, typ, query, first_time, qlang=None):
             break
         if error:
             print(error.strip())
-    # continue with Python code
+
     print("The script has finished executing.")
     with open("generated/output/out.txt", encoding="utf-8") as f:
         contents = f.read()

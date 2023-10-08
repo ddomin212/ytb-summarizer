@@ -29,7 +29,7 @@ def filters(key_name):
     return misto, seniorita
 
 
-def plot_chart(tech_data):
+def chart(tech_data):
     """create an altair chart showing the number of jobs for each technology
 
     Args:
@@ -53,7 +53,7 @@ def plot_chart(tech_data):
     return c
 
 
-def detail(loc_data, pay_data):
+def cards(loc_data, pay_data):
     """plot the detailed info on the pay and number of jobs
 
     Args:

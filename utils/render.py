@@ -1,5 +1,24 @@
 import streamlit as st
 
+from functools import wraps
+from random import choice
+
+import streamlit as st
+
+ERROR_ICONS = ["⚠️", "🚫", "🛑", "🔥", "🤯", "🤬", "👺", "👹", "👿", "💀", "☠️"]
+
+
+def exception_handler(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            st.error(body=e, icon=choice(ERROR_ICONS))
+            raise e
+
+    return wrapper
+
 def bard_request():
     c1, c2, c3 = st.columns(3)
     with c1:
@@ -38,12 +57,3 @@ def language_select(languages, flag="query"):
         return select_in2, select_out2, select_q2, confirm
     else:
         return select_in2, select_out2, confirm
-
-# def render_bot_request():
-#     bot = st.selectbox("Select summarization LLM model", ["llama2-small", "bard"])
-#     st.divider()
-#     st.session_state.selected_bot = bot
-#     if bot == "bard":
-#         return render_bard_request()
-#     else:
-#         return True

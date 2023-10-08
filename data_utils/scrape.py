@@ -6,7 +6,7 @@ import subprocess
 import pandas as pd
 
 
-def check_date():
+def scrape_new_data():
     """
     Checks if 7 days have passed since the last data update.
     If it has, it updates the date and the data, otherwise it
@@ -44,26 +44,3 @@ def check_date():
         os.environ["START_DATE"] = new_date
     else:
         print("7 days have not passed yet.")
-
-
-def load_data():
-    """
-    Loads the scraped data from Kaggle API from the generated/scraped/jobs_cz_docs.json file.
-
-    Returns:
-        tuple: A tuple of four elements. The first one is a pandas DataFrame,
-                the other three are dictionaries containing the various technologies
-                related to the dictionary variable name.
-    """
-    with open(
-        "generated/scraped/jobs_cz_docs.json", "r", encoding="utf-8"
-    ) as f:
-        json_data = json.load(f)
-    with open("static/devops_technologies.json", "r", encoding="utf-8") as f:
-        devops = json.load(f)
-    with open("static/data_technologies.json", "r", encoding="utf-8") as f:
-        data = json.load(f)
-    with open("static/web_technologies.json", "r", encoding="utf-8") as f:
-        web = json.load(f)
-    df = pd.DataFrame(json_data)
-    return df, devops, data, web
