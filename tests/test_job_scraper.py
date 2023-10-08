@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 import pandas as pd
 
@@ -9,7 +10,7 @@ from data_utils.parse import (
     get_tech,
     select_job_position,
 )
-from data_utils.scrape import check_date, load_data
+from data_utils.scrape import scrape_new_data, load_data
 from data_utils.settings import (
     CLOUD_REGEX,
     DATA_REGEX,
@@ -18,12 +19,12 @@ from data_utils.settings import (
 )
 
 
-def test_check_date():
+def test_scrape_new_data():
     os.environ["START_DATE"] = "2021-09-17"
-    str_today = "2023-09-17"
-    check_date()
+    str_today = datetime.today().strftime("%Y-%m-%d")
+    scrape_new_data()
     assert os.getenv("START_DATE") == str_today
-    check_date()
+    scrape_new_data()
     assert os.getenv("START_DATE") == str_today
 
 
