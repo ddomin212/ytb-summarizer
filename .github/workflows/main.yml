@@ -11,7 +11,9 @@ name: Publish Docker image
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      - wip
   workflow_dispatch:
 
 jobs:
