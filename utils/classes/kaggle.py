@@ -7,12 +7,14 @@ import subprocess
 import streamlit as st
 from utils.countries import languages_with_flags
 from utils.translate import deepl_translate_query
+from utils.firebase import db
 
 class KaggleAPI:
     def __init__(self, what, type) -> None:
         self.what = what
         self.type = type
-        self.is_initialized()
+        self.user_id = st.session_state.user["localId"]
+        self.path = f"generated/{self.user_id}"
 
     def is_initialized(self):
         """
@@ -22,9 +24,10 @@ class KaggleAPI:
             str: "yes" if the kaggle is initialized, "no" otherwise.
         """
         first_time = (
-            "no" if os.path.isdir(os.path.join("generated", "dataset")) else "yes"
+            "no" if os.path.isdir(os.path.join("generated", self.user_id, "dataset")) else "yes"
         )
         self.first_time = first_time
+        print(first_time)
         if first_time == "yes":
             self.create_files()
         return first_time
@@ -81,6 +84,7 @@ class KaggleAPI:
         Returns:
             List[List[str]]: A list of lists representing the rows in the output Excel file.
         """
+        self.is_initialized()
         if qlang and qlang != ilang:
             query = deepl_translate_query(query, ilang)
         video_metadata = {
@@ -100,7 +104,7 @@ class KaggleAPI:
         json.dump(
             video_metadata,
             open(
-                "generated/dataset/data.json",
+                f"generated/{self.user_id}/dataset/data.json",
                 "w",
                 encoding="utf-8",
             ),
@@ -113,6 +117,7 @@ class KaggleAPI:
                 "utils/kaggle.sh",
                 self.first_time,
                 "cocaster-kernel" if self.what == "video" else "comment-kernel",
+                self.user_id,
             ],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -134,8 +139,9 @@ class KaggleAPI:
                 print(error.strip())
 
         print("The script has finished executing.")
-        with open("generated/output/out.txt", encoding="utf-8") as f:
+        with open(f"generated/{self.user_id}/output/out.txt", encoding="utf-8") as f:
             contents = f.read()
+            db.child(self.user_id).child("history").child(link.split("watch?v=")[1]).set({"prompt": query, "response": contents, "type": self.type + " " + self.what})
             return contents
 
 
@@ -143,20 +149,21 @@ class KaggleAPI:
         """
         Initializes a Kaggle directory.
         """
+        os.mkdir(f"generated/{self.user_id}")
         self.init_dataset()
-        if not os.path.isdir("generated/kernel"):
-            os.mkdir("generated/kernel")
+        if not os.path.isdir(f"generated/{self.user_id}/kernel"):
+            os.mkdir(f"generated/{self.user_id}/kernel")
         subprocess.run(
             [
                 "cp",
                 "static/comment.ipynb",
                 "static/cocaster.ipynb",
                 "static/scraping.ipynb",
-                "generated/kernel/",
+                f"generated/{self.user_id}/kernel/",
             ],
             check=False,
         )
-        os.mkdir("generated/output")
+        os.mkdir(f"generated/{self.user_id}/output")
         print("Kaggle directory initialized.")
 
 
@@ -164,16 +171,16 @@ class KaggleAPI:
         """
         Initializes a Kaggle dataset.
         """
-        os.mkdir("generated/dataset")
+        os.mkdir(f"generated/{self.user_id}/dataset")
         kaggle_metadata = {
-            "title": "cocaster-data",
-            "id": "dandominko/cocaster-data",
+            "title": f"cocaster-data-{self.user_id}",
+            "id": f"dandominko/cocaster-data-{self.user_id}",
             "licenses": [{"name": "CC0-1.0"}],
         }
         json.dump(
             kaggle_metadata,
             open(
-                "generated/dataset/dataset-metadata.json",
+                f"generated/{self.user_id}/dataset/dataset-metadata.json",
                 "w",
                 encoding="utf-8",
             ),
@@ -189,24 +196,19 @@ class KaggleAPI:
         Args:
             what (str): The type of the summary. Either "video" or "comment".
         """
-        kernel_name = (
-            "cocaster-kernel"
-            if self.what == "video"
-            else "comment-kernel"
-            if self.what == "comment"
-            else "scraping-kernel"
-        )
-        jntb = (
-            "cocaster.ipynb"
-            if self.what == "video"
-            else "comment.ipynb"
-            if self.what == "comment"
-            else "scraping.ipynb"
-        )
+        if self.what == "video":
+            jntb = "cocaster.ipynb"
+            kernel_name = "cocaster-kernel"
+        elif self.what == "comment":
+            jntb = "comment.ipynb"
+            kernel_name = "comment-kernel"
+        else:
+            jntb = "scraping.ipynb"
+            kernel_name = "scraping-kernel"
 
         kaggle_metadata = {
-            "id": f"dandominko/{kernel_name}",
-            "title": kernel_name,
+            "id": f"dandominko/{kernel_name}-{self.user_id}",
+            "title": f"{kernel_name}-{self.user_id}",
             "code_file": jntb,
             "language": "python",
             "kernel_type": "notebook",
@@ -214,7 +216,7 @@ class KaggleAPI:
             "enable_gpu": True if self.what != "scraping" else False,
             "enable_internet": True,
             "keywords": ["gpu"],
-            "dataset_sources": ["dandominko/cocaster-data"],
+            "dataset_sources": [f"dandominko/cocaster-data-{self.user_id}"],
             "kernel_sources": [],
             "competition_sources": [],
         }
@@ -222,7 +224,7 @@ class KaggleAPI:
         json.dump(
             kaggle_metadata,
             open(
-                "generated/kernel/kernel-metadata.json",
+                f"generated/{self.user_id}/kernel/kernel-metadata.json",
                 "w",
                 encoding="utf-8",
             ),

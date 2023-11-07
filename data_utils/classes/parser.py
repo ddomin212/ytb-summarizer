@@ -4,7 +4,7 @@ import json
 
 import pandas as pd
 
-from .settings import CLOUD_REGEX, DATA_REGEX, DEVOPS_REGEX, WEB_REGEX
+from ..settings import CLOUD_REGEX, DATA_REGEX, DEVOPS_REGEX, WEB_REGEX
 
 class Parser:
     def __init__(self, misto, seniorita):

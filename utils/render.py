@@ -4,6 +4,7 @@ from functools import wraps
 from random import choice
 
 import streamlit as st
+from utils.firebase import db
 
 ERROR_ICONS = ["⚠️", "🚫", "🛑", "🔥", "🤯", "🤬", "👺", "👹", "👿", "💀", "☠️"]
 
@@ -21,14 +22,20 @@ def exception_handler(func):
 
 def bard_request():
     c1, c2, c3 = st.columns(3)
+    cookie_dict = db.child(st.session_state.user['localId']).child("bard_cookies").get().val()
     with c1:
-        st.session_state._1PSID = st.text_input("Your Bard _1PSID Cookie:")
+        st.session_state._1PSID = st.text_input("_1PSID:", value=cookie_dict["_1PSID"] if cookie_dict else "")
     with c2:
-        st.session_state._1PSIDTS = st.text_input("Your Bard _1PSIDTS Cookie:")
+        st.session_state._1PSIDTS = st.text_input("_1PSIDTS (changes frequently):", value=cookie_dict["_1PSIDTS"] if cookie_dict else "")
     with c3:
-        st.session_state._1PSIDCC = st.text_input("Your Bard _1PSIDCC Cookie:")
+        st.session_state._1PSIDCC = st.text_input("_1PSIDCC: (changes frequently)", value=cookie_dict["_1PSIDCC"] if cookie_dict else "")
     st.divider()
     if st.session_state._1PSID and st.session_state._1PSIDTS and st.session_state._1PSIDCC:
+        db.child(st.session_state.user['localId']).child("bard_cookies").set({
+            "_1PSID": st.session_state._1PSID,
+            "_1PSIDTS": st.session_state._1PSIDTS,
+            "_1PSIDCC": st.session_state._1PSIDCC,
+        })
         return True
     
 def language_select(languages, flag="query"):

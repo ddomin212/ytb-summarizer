@@ -7,11 +7,6 @@ from utils.classes.kaggle import KaggleAPI
 
 class SummarizeVideoPage(StreamlitPage):
     def setup_page(self):
-        st.set_page_config(
-            page_title="SummarizeTube",
-            page_icon="🤖",
-            layout="wide",
-        )
         st.header("✉️ Summarize video")
         st.caption(
             "Maximum duration is 2 hours, otherwise you will get an error. If your video has no subtitles, you'll have to wait longer ⏳ since we have to transcribe it first."

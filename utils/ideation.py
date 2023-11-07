@@ -2,7 +2,7 @@
 from langchain.chains import LLMChain
 from langchain.chains import SequentialChain
 from langchain.prompts import PromptTemplate
-from utils.customllm import GPTv1
+from utils.classes.customllm import GPTv1
 
 
 def video_ideation(abstract):

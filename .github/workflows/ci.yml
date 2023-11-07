@@ -33,3 +33,4 @@ jobs:
             DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
             OPEN_AI_TOKEN: ${{ secrets.OPEN_AI_TOKEN }}
             GAPI_KEY: ${{ secrets.GAPI_KEY }}
+            FIREBASE_JSON: ${{ secrets.FIREBASE_CREDS }}

@@ -7,3 +7,4 @@ deepl
 streamlit-option-menu
 pytest
 python-dotenv
+pyrebase4

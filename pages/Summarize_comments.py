@@ -7,11 +7,6 @@ from utils.classes.kaggle import KaggleAPI
 
 class SummarizeCommentsPage(StreamlitPage):
     def setup_page(self):
-        st.set_page_config(
-            page_title="SummarizeTube",
-            page_icon="🤖",
-            layout="wide",
-        )
         st.header("✉️ Summarize comments from video")
         st.caption("Might not be all the comments, but most of them will be analyzed")
         self.kaggle = KaggleAPI(what="comments", type="summarize")

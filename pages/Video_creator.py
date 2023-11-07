@@ -5,11 +5,6 @@ from utils.render import exception_handler
 
 class VideoCreatorPage(StreamlitPage):
     def setup_page(self):
-        st.set_page_config(
-            page_title="SummarizeTube",
-            page_icon="🤖",
-            layout="wide",
-        )
         st.header("📄 Draft video script & thumbnail & title")
         
     

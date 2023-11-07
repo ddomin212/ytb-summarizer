@@ -8,7 +8,6 @@ import streamlit as st
 from utils.countries import languages_with_flags
 from utils.translate import deepl_translate_query
 
-
 def is_kaggle_initialized():
     """
     Checks if kaggle is initialized. If not, it initializes it.

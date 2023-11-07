@@ -4,7 +4,7 @@ from streamlit_option_menu import option_menu
 
 from data_utils.scrape import scrape_new_data
 from data_utils.render import cards, filters, chart
-from data_utils.parser import Parser
+from data_utils.classes.parser import Parser
 
 load_dotenv()
 scrape_new_data()

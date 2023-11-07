@@ -1,5 +1,6 @@
 """List of languages with their respective 2 letter codes."""
 languages_with_flags = {
+    "English": "en",
     "Afrikaans": "af",
     "Albanian": "sq",
     "Amharic": "am",
@@ -20,7 +21,6 @@ languages_with_flags = {
     "Czech": "cs",
     "Danish": "da",
     "Dutch": "nl",
-    "English": "en",
     "Esperanto": "eo",
     "Estonian": "et",
     "Filipino": "fil",

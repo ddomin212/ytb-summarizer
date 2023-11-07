@@ -10,7 +10,6 @@ from utils.classes.kaggle import KaggleAPI
 
 class AskAVideoPage(StreamlitPage):
     def setup_page(self):
-        st.set_page_config(page_title="AskTube", page_icon="📷", layout="wide")
         st.header("💬 Chat with your video!")
         st.caption(
             "duration not limited, but you'll have to ask a certain question. If your video has no subtitles, you'll have to wait longer ⏳ since we have to transcribe it first."

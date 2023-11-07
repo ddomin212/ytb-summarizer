@@ -10,7 +10,6 @@ from utils.classes.kaggle import KaggleAPI
 
 class AskCommentsPage(StreamlitPage):
     def setup_page(self):
-        st.set_page_config(page_title="AskTube", page_icon="📷", layout="wide")
         st.header("💬 Chat with your comments!")
         st.caption("Might not be all the comments, but most of them will be analyzed")
         self.kaggle = KaggleAPI(what="comments", type="chat")
