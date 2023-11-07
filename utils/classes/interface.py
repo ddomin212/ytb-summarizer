@@ -19,7 +19,7 @@ class StreamlitPage(metaclass=ABCMeta):
         with st.expander("Authentication", expanded=not hasattr(st.session_state, "user")):
             option = st.selectbox(
                 "Select an option",
-                ["Sign up", "Log in"],
+                ["Log in", "Sign up"],
             )
             if option:
                 self.authenticate(option)

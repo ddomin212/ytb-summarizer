@@ -6,3 +6,4 @@
 kaggle.json
 /env2
 **/firebase_cfg.py
+**/node_modules/
